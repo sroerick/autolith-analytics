@@ -62,6 +62,17 @@
              (check "by actor counts hollis"
                     (some (lambda (row) (string= (gethash "actor" row) "hollis"))
                           (gethash "by_actor" r))))
+             (check "ip(8) address parsed"
+                    (string= (inet-address-after
+                              "2: wg0    inet 10.8.0.2/24 scope global wg0")
+                             "10.8.0.2"))
+             (check "openbsd ifconfig address parsed"
+                    (string= (inet-address-after
+                              "wg0: flags=8051<UP> mtu 1420
+	 inet 10.8.0.2 --> 10.8.0.1 prefix 32")
+                             "10.8.0.2"))
+             (check "inet6 not mistaken for inet"
+                    (null (inet-address-after "wg0: inet6 fe80::1 prefix 64")))
         (uiop:delete-directory-tree dir :validate t :if-does-not-exist :ignore)))
     ok))
 

@@ -32,7 +32,7 @@ package: build
 
 install-links:
 	mkdir -p $(HOME)/quicklisp/local-projects
-	ln -sfn $(CURDIR) $(HOME)/quicklisp/local-projects/autolith-analytics
+	ln -sfn "$$(pwd)" $(HOME)/quicklisp/local-projects/autolith-analytics
 
 clean:
 	rm -f bin/autolith-analytics
