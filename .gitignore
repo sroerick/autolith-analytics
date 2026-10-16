@@ -2,5 +2,5 @@ events/
 *.fasl
 *.lx64fsl
 *.core
-bin/
+bin/autolith-analytics
 dist/
