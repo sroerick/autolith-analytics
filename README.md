@@ -41,6 +41,31 @@ saguaro bridge           --append-->  events/bridge.jsonl
    a field is a v2.
 4. Binds wg0 only. Nothing public until roerick says so.
 
+## Producers (M1/M3/M4)
+
+All producers append best-effort and never block or signal on failure.
+Default target is `~/dev/wyo.tech/autolith-analytics/events/`; pp-flow and
+the bridge override the directory with `ANALYTICS_EVENTS_DIR`, the runtime
+hook the exact file with `ANALYTICS_EVENTS_FILE`. Actor is `$USER` unless
+`ANALYTICS_ACTOR` is set.
+
+| producer | lives in | writes |
+|---|---|---|
+| M1 runtime hook | autolith `src/provider/client.lisp` (`provider-stream-turn :around`) | `events/autolith.jsonl` |
+| M3 pp-flow adapter | pricklypear `scripts/pp-flow-autolith.sh` | `events/pp-flow.jsonl` |
+| M4 bridge | picoclaw-bridge `main.go` (`sendChat`/`handleChat`) | `events/bridge.jsonl` |
+
+## Run
+
+```
+make build          # dumps bin/autolith-analytics
+make smoke          # reader + rollup self-test against the schema examples
+./bin/autolith-analytics [--port 8787] [--address wg0]
+```
+
+Binds wg0 by default; loopback is the dev fallback when wg0 is absent.
+The reader tails `events/` - nothing else writes there.
+
 ## Milestones
 
 - M1 autolith exporter hook: ~20 lines in the runtime's provider-call
