@@ -1,0 +1,6 @@
+events/
+*.fasl
+*.lx64fsl
+*.core
+bin/
+dist/
